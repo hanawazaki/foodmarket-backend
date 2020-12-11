@@ -47,43 +47,50 @@ class UserController extends Controller
             return ResponseFormatter::error([
                 'message' => 'something went wrong',
                 'error' => $error
-            ],'Authenticated Failed',500);
+            ], 'Authenticated Failed', 500);
         }
     }
 
-    public function rehister(Request $request){
-        try{
+    public function register(Request $request)
+    {
+        try {
             $request->validate([
-                'name' => ['required','max:255','string'],
-                'email' => ['required','max:255','string','unique:users'],
-                'password'=> $this->passwordRules()
+                'name' => ['required', 'max:255', 'string'],
+                'email' => ['required', 'max:255', 'string', 'unique:users'],
+                'password' => $this->passwordRules()
             ]);
 
             User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'address'=>$request->address,
+                'address' => $request->address,
                 'house_number' => $request->house_number,
                 'phone_number' => $request->phone_number,
                 'city' => $request->city,
                 'password' => Hash::make($request->password)
             ]);
 
-            $user = User::where('email',$request->email)->first();
+            $user = User::where('email', $request->email)->first();
 
             $tokenresult = $user->createToken('authToken')->plainTextToken;
 
             return ResponseFormatter::success([
                 'access_token' => $tokenresult,
-                'token_type' =>'Bearer',
-                'user'=>$user
+                'token_type' => 'Bearer',
+                'user' => $user
             ]);
-        }catch(Exception $error){
+        } catch (Exception $error) {
             return ResponseFormatter::error([
                 'message' => 'Authentication failed',
                 'error' => $error
-            ],'Authentication Failed',500);
+            ], 'Authentication Failed', 500);
         }
+    }
 
+    public function logout(Request $request)
+    {
+        $token = $request->user()->currentAccessToken()->delete();
+
+        return ResponseFormatter::success([$token,'Token Revoked']);
     }
 }
