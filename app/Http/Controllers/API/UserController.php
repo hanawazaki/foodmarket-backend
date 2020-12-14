@@ -10,6 +10,8 @@ use Facade\FlareClient\Http\Response;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Hash;
 
 class UserController extends Controller
 {
