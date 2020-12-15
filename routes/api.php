@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', [UserController::class, 'fetch']);
     Route::post('user', [UserController::class, 'updateProfile']);
-    Route::get('food-transaction', 'App\Http\Controllers\API\TransactionController', 'all');
+    Route::get('food-transaction', [TransactionController::class, 'all']);
     Route::post('food-transaction/{id}', [TransactionController::class, 'update']);
     Route::post('checkout', [TransactionController::class, 'checkout']);
     Route::post('user/photo', [UserController::class, 'updatePhoto']);

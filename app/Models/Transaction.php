@@ -32,11 +32,11 @@ class Transaction extends Model
     }
 
     public function food(){
-        $this->HasOne(Food::class,'id','food_id');
+        return $this->HasOne(Food::class,'id','food_id');
     }
 
     public function user(){
-        $this->HasOne(User::class,'id','user_id');
+        return $this->HasOne(User::class,'id','user_id');
     }
 
 
